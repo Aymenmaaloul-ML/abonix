@@ -1,0 +1,42 @@
+# Déploiement sur un VPS : application + PostgreSQL + volume pour les images.
+#   1. cp .env.example .env   puis renseignez POSTGRES_PASSWORD, APP_URL (https://…) et HASH_SALT
+#   2. docker compose up -d --build
+#   3. docker compose exec app npm run admin:create
+# Fichier non testé dans l'environnement de développement : vérifiez-le avant la production.
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: abonix
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définissez POSTGRES_PASSWORD}
+      POSTGRES_DB: abonix
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U abonix"]
+      interval: 5s
+      retries: 10
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://abonix:${POSTGRES_PASSWORD}@db:5432/abonix
+      APP_URL: ${APP_URL:?définissez APP_URL}
+      HASH_SALT: ${HASH_SALT:?définissez HASH_SALT}
+      WHATSAPP_NUMBER: ${WHATSAPP_NUMBER:-21655056614}
+      STORAGE_PROVIDER: ${STORAGE_PROVIDER:-local}
+      UPLOAD_DIR: /data/uploads
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
+    volumes:
+      - uploads:/data/uploads
+volumes:
+  pgdata:
+  uploads:

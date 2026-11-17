@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+/* ───────────── Identité Abonix ─────────────
+   Boutique claire et nette : noir-vert encre pour l'action et la structure, vert WhatsApp réservé aux boutons
+   qui ouvrent WhatsApp, citron en touche unique (pastilles, repères). Les noms de variables gardent l'ancien
+   vocabulaire (navy, brand, violet) : « brand » est maintenant l'encre, « violet » le citron. */
+@theme {
+  --color-ink: #0e1a14;
+  --color-navy-900: #0e1a14;
+  --color-navy-800: #17271e;
+  --color-navy-700: #243a2d;
+  --color-navy-600: #3a5446;
+  --color-brand: #0e1a14;
+  --color-brand-600: #284236;
+  --color-brand-100: #e3ebe6;
+  --color-brand-50: #f0f4f1;
+  --color-violet: #8cb800;
+  --color-violet-100: #eefab8;
+  --color-lime: #d4f53c;
+  --color-mist: #f4f5f1;
+  --color-paper: #ffffff;
+  --color-line: #e2e6df;
+  --color-line-strong: #c8cfc6;
+  --color-muted: #57655c;
+  --color-subtle: #7d8a81;
+  --color-wa: #128c4a;
+  --color-wa-600: #0d7339;
+  --color-wa-100: #dff5e7;
+  --color-success: #0f8a5f;
+  --color-success-100: #ddf5ea;
+  --color-warning: #a9680a;
+  --color-warning-100: #fdf0d5;
+  --color-danger: #c62a47;
+  --color-danger-100: #fde4e9;
+
+  --font-display: "Unbounded Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Onest Variable", "Segoe UI", system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgb(14 26 20 / 0.04), 0 6px 20px -10px rgb(14 26 20 / 0.10);
+  --shadow-lift: 0 2px 4px rgb(14 26 20 / 0.05), 0 24px 48px -20px rgb(14 26 20 / 0.30);
+
+  --animate-bubble-in: bubble-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-mist);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  line-height: 1.15;
+}
+/* Unbounded (large) pour les titres de page et de section ; les titres de cartes restent en Onest. */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Focus clair et visible au clavier, partout. */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.on-dark :focus-visible {
+  outline-color: #fff;
+}
+
+::selection {
+  background: var(--color-brand-100);
+  color: var(--color-ink);
+}
+
+/* Texte riche (descriptions, pages légales) issu de Markdown : lecture confortable, lignes < 75 caractères. */
+.prose-abonix {
+  max-width: 68ch;
+  color: #26332b;
+}
+.prose-abonix > * + * {
+  margin-top: 1rem;
+}
+.prose-abonix h2 {
+  font-size: 1.35rem;
+  margin-top: 2rem;
+  color: var(--color-ink);
+}
+.prose-abonix h3 {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  color: var(--color-ink);
+}
+.prose-abonix ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-abonix ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.prose-abonix li + li {
+  margin-top: 0.35rem;
+}
+.prose-abonix a {
+  color: var(--color-brand-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-abonix strong {
+  color: var(--color-ink);
+}
+.prose-abonix em {
+  color: var(--color-muted);
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Défilement horizontal discret pour les tableaux d'administration sur mobile. */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
